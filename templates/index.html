@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <section class="hero">
+        <h1>Lorem ipsum dolor sit amet consectetur</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos.</p>
+        <form action="">
+            <div class="sub">
+                <input type="email" placeholder="Enter your email" name="email">
+                <button>Subscribe</button>
+            </div>
+        </form>
+    </section>
+    
+    <section id="all-blog-posts">
+        <h2 id="abp">All blog posts</h2>
+        <div class="posts">
+            {% for post in page_obj %}
+                <div class="">
+                    <div class="image">
+                        <img src="{{ post.thumbnail.url }}" width="200" alt="">
+                    </div>
+                    <div class="cnt">
+                        <small>{{ post.author }}.{{ post.date }}</small>
+                        <h2><a href="{% url 'post_detail' post.pk %}"> {{ post.title|truncatewords:10 }} </a></h2>
+                        <p>{{ post.content|truncatewords:20 }}</p>
+                        <span>{{ post.tag }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="pagination">
+        {% if page_obj %}
+            <div class="paginated">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{page_obj.previous_page_number}}" class="pg">Previous</a>
+                {% endif %}
+                <div class="page_number">
+                    {% for num in page_obj.paginator.page_range %}
+                    
+                        {% if page_obj.number == num %}
+                            <a href="?page={{ num }}" class="c-pg">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}" >{{ num }}</a>
+                        {% endif %}
+                        
+                    {% endfor %}
+                </div>
+                {% if page_obj.has_next %}
+                    <a href="?page={{page_obj.next_page_number}}" class="pg">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

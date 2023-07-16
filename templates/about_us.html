@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+    <section id="about-us">
+        <div class="container">
+            <div class="about-head">
+                <h1>we builds website<br> for <span>companies and customers</span></h1>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Sint
+                    velit ratione temporibus saepe praesentium voluptate numquam
+                </p>
+            </div>
+        </div>
+        <img src="{% static 'images/web_developer.jpg' %}" alt="">
+        <div class="container">
+            <div class="about-footer">
+                <h1>Together we <br> are strong</h1>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Optio soluta
+                    officiis provident nemo dolorum a, fuga quos ad,<br> voluptatibus commodi aliquam molestias, 
+                    repudiandae<br>  distinctio blanditiis quo?Nobis laboriosam quasi quae.
+                </p>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

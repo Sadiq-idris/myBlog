@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <script src="{% static 'app/jquery.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+    <header>
+        <h2>
+            <a href="{% url 'home' %}" class="logo">
+                myBlog
+            </a> 
+        </h2>
+        <nav id="nav">
+            <img src="{% static 'images/icon-close-menu.svg' %}" id="close-menu" alt="">
+            <ul>
+                <li><a href="{% url 'about-us' %}">About Us</a></li>
+                <li><a href="{% url 'post' %}">New Post</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign-Up</a></li>
+                {% endif %}
+                
+            </ul>
+        </nav>
+        <img src="{% static 'images/icon-menu.svg' %}" id="open-menu" alt="">
+    </header>
+
+    <main>
+         <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    
+    <footer>
+        &copy;Copyright
+    </footer>
+
+
+    <script src="{% static 'app/index.js' %}"></script>
+    
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+<div class="detail-post">
+
+    <div>
+
+        <h1>{{ post.title }}</h1>
+
+        <img src="{{ post.thumbnail.url }}" width="200" alt=""><br>
+
+        <div class="post-info">
+            <small><b>{{ post.author }}</b><br>{{ post.date }}</small>
+            <small>{{ post.tag }}</small>
+        </div>
+
+        <div class="pr">
+            <p>{{ post.content|linebreaks|urlize  }}</p>
+        </div>
+
+        <div class="cn">
+            <h2 id="conclusion">Conclusion</h2>
+            <p>{{ post.conclusion }}</p>
+        </div>
+
+        <!-- <div class="comments">
+            <h2 id="h">Comments</h2>
+            {% for comment in post.comment.all %}
+                <div class="comment">
+                    <h3>{{ comment.user }}</h3>
+                    <p>{{ comment.comment }}</p>
+                </div>
+            {% endfor %}
+        </div> -->
+        <div>
+            <h2 id="h">Comments</h2>
+            <div class="comments">
+                
+            </div>
+        </div>
+        <script type="text/javascript">
+            $("document").ready(function(){
+                setInterval(()=>{
+                    $.ajax({
+                        type:"GET",
+                        url:"getComment/{{post.id}}",
+                        success:function(response){
+                            $(".comments").empty();
+                            for (var key in response.comments){
+                               var keys = key
+                                var temp2 = "<div class='comment'><p>"+response.comments[key].comment+"</p></div>";
+
+                                $(".comments").append(temp2);
+                                
+                            }
+                        },
+                        error:function(){
+                            alert("an error occured");
+                        }
+                    });
+                },1000);
+            })
+        </script>
+       
+        <div class="comment-form">
+            <form id="comment-form">
+                {% csrf_token %}
+                <input type="text" name="comment-text" id="comment-text" placeholder="Comment...">
+                <input type="hidden" name="post_id" value="{{ post.id }}" id="post_id">
+                <!-- <input type="hidden" name="user" value="{{user}}" id="username"> -->
+
+                <button class="btn">Add</button>
+            </form>
+        </div>
+
+    </div>
+    <!-- POST UPDATE BUTTON -->
+    {% if post.author == user %}
+        <a href="{% url 'delete_post' post.id %}" class="delete-btn">Delete post</a>
+        <a href="{% url 'update_post' post.id %}" class="update-btn">Update post</a>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    $(document).on("submit", "#comment-form", function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type:"POST",
+            url:"send",
+            data:{
+                // username:$("#username").val(),
+                post_id:$("#post_id").val(),
+                comment:$("#comment-text").val(),
+                csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success:function(data){
+                // alert("success")
+            }
+        });
+        document.getElementById("comment-text").value = "";
+    });
+</script>
+
+{% endblock %}
